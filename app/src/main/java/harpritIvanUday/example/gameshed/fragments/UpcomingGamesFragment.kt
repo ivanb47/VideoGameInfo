@@ -16,9 +16,7 @@ import harpritIvanUday.example.gameshed.placeholder.PlaceholderContent
  * A fragment representing a list of Items.
  */
 class UpcomingGamesFragment : Fragment() {
-
     private var columnCount = 1
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

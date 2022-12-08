@@ -65,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
         }
-        binding.textViewHere.setOnClickListener{
+        binding.goToSignUp.setOnClickListener{
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }

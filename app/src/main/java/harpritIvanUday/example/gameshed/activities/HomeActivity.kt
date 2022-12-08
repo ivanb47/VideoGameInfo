@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseUser
 import harpritIvanUday.example.gameshed.OnGameClickListener
 import harpritIvanUday.example.gameshed.adapters.PageAdapter
 import harpritIvanUday.example.gameshed.R
@@ -19,6 +20,14 @@ import harpritIvanUday.example.gameshed.fragments.ProfileFragment
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var bottomNavigationView: BottomNavigationView
+
+    fun moveToLogin() {
+        val intent = Intent(this,LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -27,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Fragments for bottom tabs
-        val homeFragment= ProfileFragment()
+        val homeFragment= HomeFragment()
         val favouriteFragment= FavouriteFragment()
         val aboutUsFragment= AboutUsFragment()
         val profileFragment= ProfileFragment()
