@@ -30,6 +30,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        window.statusBarColor = this.resources.getColor(R.color.white)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         bottomNavigationView = binding.bottomNavigationView
 
