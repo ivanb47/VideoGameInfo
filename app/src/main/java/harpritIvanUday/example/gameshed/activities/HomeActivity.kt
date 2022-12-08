@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import harpritIvanUday.example.gameshed.OnGameClickListener
 import harpritIvanUday.example.gameshed.adapters.PageAdapter
@@ -17,38 +18,49 @@ import harpritIvanUday.example.gameshed.fragments.ProfileFragment
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
+    private lateinit var bottomNavigationView: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        val viewPager = findViewById<ViewPager>(R.id.viewPager)
-        viewPager.adapter = PageAdapter(supportFragmentManager)
+        bottomNavigationView = binding.bottomNavigationView
 
-        val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
-        tabLayout.setupWithViewPager(viewPager)
+        setContentView(binding.root)
 
         // Fragments for bottom tabs
-        val homeFragment= HomeFragment()
+        val homeFragment= ProfileFragment()
         val favouriteFragment= FavouriteFragment()
         val aboutUsFragment= AboutUsFragment()
         val profileFragment= ProfileFragment()
 
-        setCurrentFragment(homeFragment)
-
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener {
-            when(it.itemId){
-                R.id.home ->setCurrentFragment(homeFragment)
-                R.id.person ->setCurrentFragment(profileFragment)
-                R.id.favourite ->setCurrentFragment(favouriteFragment)
-                R.id.aboutUs ->setCurrentFragment(aboutUsFragment)
-
+        bottomNavigationView.setOnItemSelectedListener {
+            item-> when(item.itemId){
+            R.id.home -> {
+                setCurrentFragment(homeFragment)
+                binding.topAppBar.title = getString(R.string.home)
+                true
             }
-            true
+            R.id.favourite -> {
+                setCurrentFragment(favouriteFragment)
+                binding.topAppBar.title = getString(R.string.favorites)
+                true
+            }
+            R.id.person -> {
+                setCurrentFragment(profileFragment)
+                binding.topAppBar.title = getString(R.string.profile)
+                true
+            }
+            R.id.aboutUs -> {
+                setCurrentFragment(aboutUsFragment)
+                binding.topAppBar.title = getString(R.string.about)
+                true
+            }
+            else -> false
+        }
         }
     }
     private fun setCurrentFragment(fragment: Fragment)=
         supportFragmentManager.beginTransaction().apply {
-            //replace(R.id.flFragment,fragment)
+            replace(R.id.viewPager,fragment)
             commit()
         }
 
