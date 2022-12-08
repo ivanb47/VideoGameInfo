@@ -8,4 +8,5 @@
     <color name="black">#fff</color>
     <color name="white">#000</color>
     <color name="blue">#3F51B5</color>
+    <color name="material_dynamic_neutral_variant90">#333647</color>
 </resources>

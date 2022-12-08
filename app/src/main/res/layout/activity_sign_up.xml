@@ -17,6 +17,7 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             style="?attr/collapsingToolbarLayoutLargeStyle"
             android:layout_width="match_parent"
+            android:background="@color/material_dynamic_neutral_variant90"
             android:layout_height="?attr/collapsingToolbarLayoutLargeSize">
 
             <com.google.android.material.appbar.MaterialToolbar
@@ -35,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:autofillHints="@string/prompt_email"
-        android:background="@color/material_dynamic_neutral90"
+        android:background="@color/material_dynamic_neutral_variant90"
         android:hint="@string/name"
         android:inputType="textEmailAddress"
         android:padding="10dp"
@@ -50,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:autofillHints="@string/prompt_email"
-        android:background="@color/material_dynamic_neutral90"
+        android:background="@color/material_dynamic_neutral_variant90"
         android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
         android:padding="10dp"
@@ -65,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:autofillHints="@string/prompt_email"
-        android:background="@color/material_dynamic_neutral90"
+        android:background="@color/material_dynamic_neutral_variant90"
         android:hint="@string/prompt_password"
         android:inputType="textEmailAddress"
         android:padding="10dp"

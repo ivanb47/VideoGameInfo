@@ -44,11 +44,13 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="151dp"
-        android:layout_height="122dp"
+        android:layout_width="170dp"
+        android:layout_height="166dp"
         android:layout_marginTop="48dp"
         android:backgroundTint="#0D47A1"
         android:backgroundTintMode="add"
+        android:foreground="@drawable/ic_baseline_person_24"
+        android:foregroundTint="@color/material_dynamic_neutral_variant90"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
