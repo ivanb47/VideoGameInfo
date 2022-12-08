@@ -2,17 +2,19 @@ package harpritIvanUday.example.gameshed.activities
 
 import android.content.ContentValues.TAG
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import harpritIvanUday.example.gameshed.R
 import harpritIvanUday.example.gameshed.databinding.ActivitySignUpBinding
+
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -72,6 +74,10 @@ class SignUpActivity : AppCompatActivity() {
                         Log.d(TAG, "createUserWithEmail:success")
                         val user = auth.currentUser
                         createUserData()
+                        val profileUpdates = UserProfileChangeRequest.Builder()
+                            .setDisplayName(binding.nameTextSignup.text.toString())
+                            .build()
+                        user?.updateProfile(profileUpdates)
                         moveToHome(user!!)
                     } else {
                         // If sign in fails, display a message to the user.
