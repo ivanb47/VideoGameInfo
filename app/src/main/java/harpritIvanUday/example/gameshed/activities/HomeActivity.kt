@@ -27,8 +27,7 @@ class HomeActivity : AppCompatActivity() {
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
         tabLayout.setupWithViewPager(viewPager)
 
-
-
+        // Fragments for bottom tabs
         val homeFragment= HomeFragment()
         val favouriteFragment= FavouriteFragment()
         val aboutUsFragment= AboutUsFragment()
@@ -46,10 +45,6 @@ class HomeActivity : AppCompatActivity() {
             }
             true
         }
-
-
-
-
     }
     private fun setCurrentFragment(fragment: Fragment)=
         supportFragmentManager.beginTransaction().apply {
