@@ -81,13 +81,16 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/button2"
-                android:layout_width="63dp"
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:drawableTint="@color/blue"
                 android:paddingLeft="24dp"
+                android:text="click to save"
                 android:textColorLink="#D12424"
-                app:icon="@drawable/baseline_favorite_white_24dp" />
+                app:icon="@drawable/baseline_favorite_white_24dp"
+                app:iconTint="#FFFFFF" />
 
             <TextView
                 android:id="@+id/tvReleaseDate"

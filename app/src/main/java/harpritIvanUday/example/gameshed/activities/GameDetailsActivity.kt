@@ -1,10 +1,15 @@
 package harpritIvanUday.example.gameshed.activities
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.widget.RatingBar
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import harpritIvanUday.example.gameshed.GameDetail
@@ -18,8 +23,10 @@ import javax.net.ssl.HttpsURLConnection
 class GameDetailsActivity : AppCompatActivity() {
     var ratingbar: RatingBar? = null
     lateinit var binding: ActivityGameDetailsBinding
-
+    private lateinit var userData: HashMap<String, Any>
+    val currentUser = Firebase.firestore.collection("users").document(FirebaseAuth.getInstance().uid.toString())
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityGameDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -28,8 +35,47 @@ class GameDetailsActivity : AppCompatActivity() {
         Log.e("GameID", gameID.toString())
         getGamesData(gameID!!).start()
         addListenerOnRatingClick()
+        fetchUserData(gameID)
+        binding.saveButton.setOnClickListener {
+          // if userData.favorite contains gameID, remove it
+            if( userData["favorites"].toString().contains(gameID.toString())){
+                removeFromFavorite(gameID)
+                Log.e("Removed from favorites", gameID.toString())
+            }else{
+                Log.e("Added to favorites", gameID.toString())
+                addToFavorite(gameID)
+            }
+        }
     }
-
+    private fun addToFavorite(gameID: Int) {
+        currentUser
+            .update("favorites", FieldValue.arrayUnion(gameID))
+            .addOnSuccessListener {
+                fetchUserData(gameID)
+                Log.d(TAG, "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+    }
+    private fun removeFromFavorite(gameID: Int) {
+        currentUser
+            .update("favorites", FieldValue.arrayRemove(gameID))
+            .addOnSuccessListener {
+                fetchUserData(gameID)
+                Log.d(TAG, "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
+    }
+    private fun fetchUserData(gameID: Int) {
+        Firebase.firestore.collection("users").document(FirebaseAuth.getInstance().uid.toString()).get().addOnSuccessListener {
+            userData = it.data as HashMap<String, Any>
+            if(userData["favorites"].toString().contains(gameID.toString())){
+                binding.saveButton.text = "Saved"
+            }else{
+                binding.saveButton.text = "Click to save"
+            }
+            Log.e(TAG, "fetchUserData: $userData")
+        }
+    }
     private fun addListenerOnRatingClick() {
         ratingbar = findViewById(R.id.ratingBar)
         //Performing action on Button Click

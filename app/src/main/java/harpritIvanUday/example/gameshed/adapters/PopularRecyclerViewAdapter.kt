@@ -45,7 +45,7 @@ class PopularRecyclerViewAdapter(
         holder.tvGameRelease.text = "Release Date: " +item.released
         Picasso.get().load(item.background_image).into(holder.imgGame)
         holder.cardGame.setOnClickListener {
-            Toast.makeText(holder.itemView.context, "Clicked", Toast.LENGTH_SHORT).show()
+
             Intent (holder.itemView.context, GameDetailsActivity::class.java).also {
                 Log.e("Game Name", item.id.toString())
                 it.putExtra("gameID", item.id)

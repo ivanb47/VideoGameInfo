@@ -19,6 +19,7 @@ import harpritIvanUday.example.gameshed.databinding.ActivitySignUpBinding
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var auth: FirebaseAuth
+
     private fun moveToHome(user: FirebaseUser) {
         val intent = Intent(this,HomeActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -35,8 +36,6 @@ class SignUpActivity : AppCompatActivity() {
             moveToHome(currentUser)
         }
     }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -55,10 +54,9 @@ class SignUpActivity : AppCompatActivity() {
                 "id" to auth.currentUser?.uid
             )
             val db = Firebase.firestore
-            db.collection("users")
-                .add(userData)
+            db.collection("users").document(userData["id"].toString()).set(userData)
                 .addOnSuccessListener { documentReference ->
-                    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.toString()}")
                 }
                 .addOnFailureListener { e ->
                     Log.w(TAG, "Error adding document", e)

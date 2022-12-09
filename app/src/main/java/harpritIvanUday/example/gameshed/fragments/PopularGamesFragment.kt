@@ -37,7 +37,6 @@ class PopularGamesFragment : Fragment() {
         (activity as HomeActivity?)?.setFragmentRefreshListener(object :
             HomeActivity.FragmentRefreshListener {
             override fun onRefresh() {
-                Toast.makeText(context, "This is called from MainActivity", Toast.LENGTH_SHORT).show();
                 // Set the adapter
                 if (view is RecyclerView) {
                     with(view) {
