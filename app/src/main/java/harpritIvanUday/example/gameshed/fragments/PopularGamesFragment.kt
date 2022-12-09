@@ -34,24 +34,27 @@ class PopularGamesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_popular_list, container, false)
+        reloadList(view)
         (activity as HomeActivity?)?.setFragmentRefreshListener(object :
             HomeActivity.FragmentRefreshListener {
             override fun onRefresh() {
-                // Set the adapter
-                if (view is RecyclerView) {
-                    with(view) {
-                        layoutManager = when {
-                            columnCount <= 1 -> LinearLayoutManager(context)
-                            else -> GridLayoutManager(context, columnCount)
-                        }
-                        adapter = PopularRecyclerViewAdapter((activity as HomeActivity).popularGames)
-                        Log.e("PopularGamesFragment", "onCreateView: ${(activity as HomeActivity).popularGames}" )
-                    }
-                }
+                reloadList(view)
             }
         }
         )
         return view
+    }
+    fun reloadList(view: View){
+        if (view is RecyclerView) {
+            with(view) {
+                layoutManager = when {
+                    columnCount <= 1 -> LinearLayoutManager(context)
+                    else -> GridLayoutManager(context, columnCount)
+                }
+                adapter = PopularRecyclerViewAdapter((activity as HomeActivity).popularGames)
+                Log.e("PopularGamesFragment", "onCreateView: ${(activity as HomeActivity).popularGames}" )
+            }
+        }
     }
 
     companion object {
