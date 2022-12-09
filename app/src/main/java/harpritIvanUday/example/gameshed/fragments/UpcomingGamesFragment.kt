@@ -19,7 +19,6 @@ class UpcomingGamesFragment : Fragment() {
     private var columnCount = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
@@ -30,7 +29,6 @@ class UpcomingGamesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_upcoming_games_list, container, false)
-
         // Set the adapter
         if (view is RecyclerView) {
             with(view) {

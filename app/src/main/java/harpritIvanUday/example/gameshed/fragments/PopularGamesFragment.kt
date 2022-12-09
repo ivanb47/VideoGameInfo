@@ -1,21 +1,19 @@
 package harpritIvanUday.example.gameshed.fragments
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import harpritIvanUday.example.gameshed.OnGameClickListener
-import harpritIvanUday.example.gameshed.adapters.PopularRecyclerViewAdapter
+import harpritIvanUday.example.gameshed.APIFormat
 import harpritIvanUday.example.gameshed.R
-import harpritIvanUday.example.gameshed.activities.GameDetailsActivity
 import harpritIvanUday.example.gameshed.activities.HomeActivity
-import harpritIvanUday.example.gameshed.databinding.ActivityHomeBinding
-import harpritIvanUday.example.gameshed.placeholder.PlaceholderContent
+import harpritIvanUday.example.gameshed.adapters.PopularRecyclerViewAdapter
 
 /**
  * A fragment representing a list of Items.
@@ -26,7 +24,6 @@ class PopularGamesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
@@ -38,17 +35,24 @@ class PopularGamesFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_popular_list, container, false)
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
+        (activity as HomeActivity?)?.setFragmentRefreshListener(object :
+            HomeActivity.FragmentRefreshListener {
+            override fun onRefresh() {
+                Toast.makeText(context, "This is called from MainActivity", Toast.LENGTH_SHORT).show();
+                // Set the adapter
+                if (view is RecyclerView) {
+                    with(view) {
+                        layoutManager = when {
+                            columnCount <= 1 -> LinearLayoutManager(context)
+                            else -> GridLayoutManager(context, columnCount)
+                        }
+                        adapter = PopularRecyclerViewAdapter((activity as HomeActivity).popularGames)
+                        Log.e("PopularGamesFragment", "onCreateView: ${(activity as HomeActivity).popularGames}" )
+                    }
                 }
-                adapter = PopularRecyclerViewAdapter(PlaceholderContent.ITEMS)
-
             }
         }
+        )
         return view
     }
 

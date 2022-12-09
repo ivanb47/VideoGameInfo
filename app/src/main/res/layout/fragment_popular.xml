@@ -9,30 +9,66 @@
         android:layout_height="match_parent"
         android:layout_margin="10dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        card_view:cardCornerRadius="20dp"
-        card_view:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/imgGame"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/game" />
-
-        <TextView
-            android:id="@+id/tvGameName"
-            android:layout_width="343dp"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_gravity="center"
-            android:text="Game name"
-            android:textColor="@color/white"
-            android:textSize="17sp"
-            android:textStyle="bold" />
-    </androidx.cardview.widget.CardView>
+            card_view:cardCornerRadius="20dp"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imgGame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/game" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvGameName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingLeft="20dp"
+                    android:text="Game name"
+                    android:textColor="@color/white"
+                    android:elevation="15dp"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvGameRating"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingLeft="20dp"
+                    android:elevation="15dp"
+                    android:text="Game rating"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvGameRelease"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingLeft="20dp"
+                    android:elevation="15dp"
+                    android:text="Game release"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>

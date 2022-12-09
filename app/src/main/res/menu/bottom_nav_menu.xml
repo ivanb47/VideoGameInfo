@@ -4,7 +4,6 @@
     <item
         android:id="@+id/home"
         android:title="Home"
-        android:enabled="true"
         android:icon="@drawable/home"/>
     <item
         android:id="@+id/favourite"
@@ -16,6 +15,7 @@
         android:icon="@drawable/baseline_info_white_24dp"/>
     <item
         android:id="@+id/person"
+        android:enabled="true"
         android:title="Profile"
         android:icon="@drawable/baseline_person_white_24dp"/>
 

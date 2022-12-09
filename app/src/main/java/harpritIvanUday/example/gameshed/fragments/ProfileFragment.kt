@@ -13,7 +13,6 @@ import harpritIvanUday.example.gameshed.R
 import harpritIvanUday.example.gameshed.activities.HomeActivity
 import harpritIvanUday.example.gameshed.databinding.FragmentProfileBinding
 
-
 private lateinit var binding: FragmentProfileBinding
 private lateinit var auth: FirebaseAuth
 class ProfileFragment : Fragment() {

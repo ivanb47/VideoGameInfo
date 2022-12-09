@@ -22,6 +22,13 @@
     <string name="no_account">Do not have an account, Sign Up</string>
     <string name="have_account">Already have an account, Sign In</string>
     <string name="here">Here</string>
+
+    <string-array name="app_features">
+        <item>> User can view latest and upcoming games</item>
+        <item>> User can can save games to their favorite list</item>
+        <item>> User can view detail of games</item>
+        <item>> User can access their favorite games any time</item>
+    </string-array>
     <!-- strings related to the To Do list -->
     <string name="todo">To Do List</string>
     <string name="add">Add item to firestore</string>
@@ -49,4 +56,8 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="developed_by">Developed By</string>
+    <string name="developers">Uday, Ivan and Harprit</string>
+    <string name="app_features">App features</string>
+    <string name="app_info">This application is developed as a part of project 1 of Android development course.</string>
 </resources>
