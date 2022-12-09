@@ -60,4 +60,5 @@
     <string name="developers">Uday, Ivan and Harprit</string>
     <string name="app_features">App features</string>
     <string name="app_info">This application is developed as a part of project 1 of Android development course.</string>
+    <string name="website">"Website: "</string>
 </resources>

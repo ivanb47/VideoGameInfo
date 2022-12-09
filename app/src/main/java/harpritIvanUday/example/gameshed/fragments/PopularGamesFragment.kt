@@ -34,7 +34,6 @@ class PopularGamesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_popular_list, container, false)
-
         (activity as HomeActivity?)?.setFragmentRefreshListener(object :
             HomeActivity.FragmentRefreshListener {
             override fun onRefresh() {

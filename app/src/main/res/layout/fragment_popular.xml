@@ -13,7 +13,9 @@
             android:id="@+id/card_view"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:elevation="15dp"
             android:layout_gravity="center"
+            android:padding="20dp"
             card_view:cardCornerRadius="20dp"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
@@ -22,13 +24,17 @@
             <ImageView
                 android:id="@+id/imgGame"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="99dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/game" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="#59232323"
+                android:backgroundTint="#000000"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
@@ -36,11 +42,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:elevation="15dp"
                     android:paddingLeft="20dp"
                     android:text="Game name"
-                    android:textColor="@color/white"
-                    android:elevation="15dp"
-                    android:textSize="17sp"
+                    android:textColor="@color/white2"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -48,24 +54,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:paddingLeft="20dp"
                     android:elevation="15dp"
+                    android:paddingLeft="20dp"
                     android:text="Game rating"
-                    android:textColor="@color/white"
+                    android:textColor="@color/white2"
                     android:textSize="17sp"
-                    android:textStyle="bold" />
+                    android:textStyle="normal" />
 
                 <TextView
                     android:id="@+id/tvGameRelease"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:paddingLeft="20dp"
                     android:elevation="15dp"
+                    android:paddingLeft="20dp"
                     android:text="Game release"
-                    android:textColor="@color/white"
+                    android:textColor="@color/white2"
                     android:textSize="17sp"
-                    android:textStyle="bold" />
+                    android:textStyle="normal" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

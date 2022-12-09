@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -43,6 +44,9 @@ class HomeActivity : AppCompatActivity() {
         bottomNavigationView = binding.bottomNavigationView
 
         setContentView(binding.root)
+
+        val actionBar: ActionBar? = supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Fragments for bottom tabs
         val homeFragment= HomeFragment()
@@ -84,30 +88,6 @@ class HomeActivity : AppCompatActivity() {
             commit()
         }
 
-    private fun getBookData(): Thread
-    {
-        return Thread {
-            val uri = "https://api.nytimes.com/svc/topstories/v2/"
-            val type = "arts"
-            val apiKey = "4VoThQ8geeevCgCdjKhBnvo3G8qvPAGz"
-            val url = URL("$uri$type.json?api-key=$apiKey")
-            val connection  = url.openConnection() as HttpsURLConnection
-            if(connection.responseCode == 200)
-            {
-                val inputSystem = connection.inputStream
-                val inputStreamReader = InputStreamReader(inputSystem, "UTF-8")
-                val request = Gson().fromJson(inputStreamReader, APIFormat::class.java)
-                Log.d("API", request.toString())
-                updateUI(request)
-                inputStreamReader.close()
-                inputSystem.close()
-            }
-            else
-            {
-               Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
     private fun getGamesData(): Thread
     {
         return Thread {
