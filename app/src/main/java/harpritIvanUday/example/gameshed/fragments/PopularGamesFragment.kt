@@ -19,16 +19,13 @@ import harpritIvanUday.example.gameshed.adapters.PopularRecyclerViewAdapter
  * A fragment representing a list of Items.
  */
 class PopularGamesFragment : Fragment() {
-
     private var columnCount = 1
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

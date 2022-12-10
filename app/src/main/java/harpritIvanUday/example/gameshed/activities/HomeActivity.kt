@@ -11,13 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
-import harpritIvanUday.example.gameshed.APIFormat
-import harpritIvanUday.example.gameshed.OnGameClickListener
+import harpritIvanUday.example.gameshed.*
 import harpritIvanUday.example.gameshed.adapters.PageAdapter
-import harpritIvanUday.example.gameshed.R
-import harpritIvanUday.example.gameshed.Results
 import harpritIvanUday.example.gameshed.databinding.ActivityHomeBinding
 import harpritIvanUday.example.gameshed.fragments.*
 import java.io.InputStreamReader
@@ -29,6 +29,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var bottomNavigationView: BottomNavigationView
     private var fragmentRefreshListener: FragmentRefreshListener? = null
     var popularGames: List<Results> = mutableListOf()
+    var favoriteGames: List<Results> = mutableListOf()
+    val currentUser = Firebase.firestore.collection("users").document(FirebaseAuth.getInstance().uid.toString())
 
     fun moveToLogin() {
         val intent = Intent(this,LoginActivity::class.java)
@@ -55,7 +57,6 @@ class HomeActivity : AppCompatActivity() {
         val profileFragment= ProfileFragment()
 
         getGamesData().start()
-
         bottomNavigationView.setOnItemSelectedListener {
             item-> when(item.itemId){
             R.id.home -> {
@@ -82,11 +83,26 @@ class HomeActivity : AppCompatActivity() {
         }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        getFavouriteGames()
+    }
     private fun setCurrentFragment(fragment: Fragment)=
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.viewPager,fragment)
             commit()
         }
+
+     private fun getFavouriteGames(){
+         favoriteGames = mutableListOf()
+        currentUser.get().addOnSuccessListener { it ->
+            var result = it.get("favorites") as List<Int>
+            result.forEach{ id ->
+                getGameData(id).start()
+            }
+        }
+    }
 
     private fun getGamesData(): Thread
     {
@@ -94,13 +110,11 @@ class HomeActivity : AppCompatActivity() {
             val uri = "https://api.rawg.io/api/games?key=d64de3cb496f46a1a5b5f3b1669764e9"
             val url = URL("$uri")
             val connection  = url.openConnection() as HttpsURLConnection
-            Log.d("API",connection.inputStream.toString())
             if(connection.responseCode == 200)
             {
                 val inputSystem = connection.inputStream
                 val inputStreamReader = InputStreamReader(inputSystem, "UTF-8")
                 val request = Gson().fromJson(inputStreamReader, APIFormat::class.java)
-                Log.d("API", request.toString())
                 popularGames = request.results
                 updateUI(request)
                 inputStreamReader.close()
@@ -109,6 +123,38 @@ class HomeActivity : AppCompatActivity() {
             else
             {
              Log.e("API", "Error")
+            }
+        }
+    }
+    private fun getGameData(id: Int): Thread
+    {
+        return Thread {
+            val uri = "https://api.rawg.io/api/games/"
+            val key = "d64de3cb496f46a1a5b5f3b1669764e9"
+            val url = URL("$uri$id?key=$key")
+            val connection  = url.openConnection() as HttpsURLConnection
+            if(connection.responseCode == 200)
+            {
+                val inputSystem = connection.inputStream
+                val inputStreamReader = InputStreamReader(inputSystem, "UTF-8")
+                val request = Gson().fromJson(inputStreamReader, Results::class.java)
+                favoriteGames += request
+                updateFavoriteList(request)
+                inputStreamReader.close()
+                inputSystem.close()
+            }
+            else
+            {
+                Log.e("API", "Error")
+            }
+        }
+    }
+    private fun updateFavoriteList(request: Results){
+        runOnUiThread {
+            kotlin.run {
+                if(getFragmentRefreshListener()!= null){
+                    getFragmentRefreshListener()?.onRefresh();
+                }
             }
         }
     }

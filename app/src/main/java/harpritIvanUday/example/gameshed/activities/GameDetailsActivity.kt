@@ -90,7 +90,6 @@ class GameDetailsActivity : AppCompatActivity() {
             val key = "d64de3cb496f46a1a5b5f3b1669764e9"
             val url = URL("$uri$id?key=$key")
             val connection  = url.openConnection() as HttpsURLConnection
-
             Log.e("API",connection.inputStream.toString())
             if(connection.responseCode == 200)
             {
