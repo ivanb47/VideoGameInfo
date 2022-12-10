@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "484978176223",
+    "project_id": "gameshed-6ba44",
+    "storage_bucket": "gameshed-6ba44.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484978176223:android:d0d2f6d7be74928e5c796a",
+        "android_client_info": {
+          "package_name": "harpritIvanUday.example.gameshed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "484978176223-p2jro7h2f8abc2pk7b69vm7mio4pelj9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYB6sX29DaRcHd4ssIcsHAxL7fpiKEQv4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "484978176223-p2jro7h2f8abc2pk7b69vm7mio4pelj9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
