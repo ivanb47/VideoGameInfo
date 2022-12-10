@@ -28,7 +28,9 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var bottomNavigationView: BottomNavigationView
     private var fragmentRefreshListener: FragmentRefreshListener? = null
+    private var fragmentRefreshListener2: FragmentRefreshListener? = null
     var popularGames: List<Results> = mutableListOf()
+    var upcomingGames: List<Results> = mutableListOf()
     var favoriteGames: List<Results> = mutableListOf()
     val currentUser = Firebase.firestore.collection("users").document(FirebaseAuth.getInstance().uid.toString())
 
@@ -56,7 +58,8 @@ class HomeActivity : AppCompatActivity() {
         val aboutUsFragment= AboutUsFragment()
         val profileFragment= ProfileFragment()
 
-        getGamesData().start()
+        getFamousGamesData().start()
+        getUpcomingGamesData().start()
         bottomNavigationView.setOnItemSelectedListener {
             item-> when(item.itemId){
             R.id.home -> {
@@ -104,7 +107,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun getGamesData(): Thread
+    private fun getFamousGamesData(): Thread
     {
         return Thread {
             val uri = "https://api.rawg.io/api/games?key=d64de3cb496f46a1a5b5f3b1669764e9"
@@ -123,6 +126,28 @@ class HomeActivity : AppCompatActivity() {
             else
             {
              Log.e("API", "Error")
+            }
+        }
+    }
+    private fun getUpcomingGamesData(): Thread
+    {
+        return Thread {
+            val uri = "https://api.rawg.io/api/games?key=d64de3cb496f46a1a5b5f3b1669764e9&dates=2023-01-01,2023-09-30"
+            val url = URL("$uri")
+            val connection  = url.openConnection() as HttpsURLConnection
+            if(connection.responseCode == 200)
+            {
+                val inputSystem = connection.inputStream
+                val inputStreamReader = InputStreamReader(inputSystem, "UTF-8")
+                val request = Gson().fromJson(inputStreamReader, APIFormat::class.java)
+                upcomingGames = request.results
+                updateUI(request)
+                inputStreamReader.close()
+                inputSystem.close()
+            }
+            else
+            {
+                Log.e("API", "Error")
             }
         }
     }
@@ -167,8 +192,17 @@ class HomeActivity : AppCompatActivity() {
             }
         }
     }
+    private fun updateFavUI( request: APIFormat){
+        runOnUiThread{
+            kotlin.run {
+                if(getFragmentRefreshListener2()!= null){
+                    getFragmentRefreshListener2()?.onRefresh();
+                }
+            }
+        }
+    }
 
-    fun getFragmentRefreshListener(): FragmentRefreshListener? {
+    private fun getFragmentRefreshListener(): FragmentRefreshListener? {
         return fragmentRefreshListener
     }
 
@@ -180,4 +214,15 @@ class HomeActivity : AppCompatActivity() {
         fun onRefresh()
     }
 
+    private fun getFragmentRefreshListener2(): FragmentRefreshListener? {
+        return fragmentRefreshListener2
+    }
+
+    fun setFragmentRefreshListener2(fragmentRefreshListener1: FragmentRefreshListener) {
+        fragmentRefreshListener2 = fragmentRefreshListener1
+    }
+
+    interface FragmentRefreshListener2 {
+        fun onRefresh()
+    }
 }
