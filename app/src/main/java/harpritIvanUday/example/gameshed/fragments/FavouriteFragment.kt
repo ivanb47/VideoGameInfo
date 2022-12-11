@@ -1,5 +1,6 @@
 package harpritIvanUday.example.gameshed.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,11 +18,13 @@ import harpritIvanUday.example.gameshed.R
 import harpritIvanUday.example.gameshed.activities.HomeActivity
 import harpritIvanUday.example.gameshed.adapters.FavoriteRecyclerViewAdapter
 import harpritIvanUday.example.gameshed.adapters.PopularRecyclerViewAdapter
+import harpritIvanUday.example.gameshed.viewModel.HomeViewModel
 
 /**
  * A fragment representing a list of Items.
  */
 class FavouriteFragment : Fragment() {
+    private val sharedViewModel: HomeViewModel by activityViewModels()
     private var columnCount = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +41,8 @@ class FavouriteFragment : Fragment() {
         (activity as HomeActivity?)?.setFragmentRefreshListener(object :
             HomeActivity.FragmentRefreshListener {
             override fun onRefresh() {
+
+
                 reloadList(view)
             }
         }
@@ -43,14 +50,14 @@ class FavouriteFragment : Fragment() {
         return view
     }
     fun reloadList(view: View){
-        Log.e("PopularGamesFragment", "onCreateView: ${(activity as HomeActivity).favoriteGames}" )
+      //  Log.e("PopularGamesFragment", "onCreateView: ${(activity as HomeActivity).favoriteGames}" )
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = FavoriteRecyclerViewAdapter((activity as HomeActivity).favoriteGames)
+                adapter = FavoriteRecyclerViewAdapter(sharedViewModel.favoriteGames)
 
             }
         }

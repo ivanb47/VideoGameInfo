@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.RatingBar
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
@@ -15,12 +16,15 @@ import com.squareup.picasso.Picasso
 import harpritIvanUday.example.gameshed.GameDetail
 import harpritIvanUday.example.gameshed.R
 import harpritIvanUday.example.gameshed.databinding.ActivityGameDetailsBinding
+import harpritIvanUday.example.gameshed.viewModel.GameDetailsViewModel
+import harpritIvanUday.example.gameshed.viewModel.LoginViewModel
 import java.io.InputStreamReader
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
 
 class GameDetailsActivity : AppCompatActivity() {
+    private lateinit var viewModel: GameDetailsViewModel
     var ratingbar: RatingBar? = null
     lateinit var binding: ActivityGameDetailsBinding
     private lateinit var userData: HashMap<String, Any>
@@ -30,10 +34,11 @@ class GameDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityGameDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModel = ViewModelProvider(this)[GameDetailsViewModel::class.java]
 
         val gameID = intent.getIntExtra("gameID", 0)
         Log.e("GameID", gameID.toString())
-        getGamesData(gameID!!).start()
+        getGamesData(gameID).start()
         addListenerOnRatingClick()
         fetchUserData(gameID)
         binding.saveButton.setOnClickListener {
@@ -69,9 +74,9 @@ class GameDetailsActivity : AppCompatActivity() {
         Firebase.firestore.collection("users").document(FirebaseAuth.getInstance().uid.toString()).get().addOnSuccessListener {
             userData = it.data as HashMap<String, Any>
             if(userData["favorites"].toString().contains(gameID.toString())){
-                binding.saveButton.text = "Saved"
+                binding.saveButton.text = getString(R.string.saved)
             }else{
-                binding.saveButton.text = "Click to save"
+                binding.saveButton.text = getString(R.string.clickToSave)
             }
             Log.e(TAG, "fetchUserData: $userData")
         }
@@ -80,7 +85,7 @@ class GameDetailsActivity : AppCompatActivity() {
         ratingbar = findViewById(R.id.ratingBar)
         //Performing action on Button Click
         //Performing action on Button Click
-            val rating = ratingbar!!.rating.toString()
+   //         val rating = ratingbar!!.rating.toString()
     }
     private fun getGamesData(id: Int): Thread
     {
@@ -115,8 +120,8 @@ class GameDetailsActivity : AppCompatActivity() {
                 binding.topAppBar.title = request.name
                 binding.ratingBar.rating = request.rating.toFloat()
                 binding.tvRating.text = request.rating
-                binding.tvReleaseDate.text = getString(R.string.release_date) + request.released
-                binding.tvPlatform.text = getString(R.string.website) + request.website
+                binding.tvReleaseDate.text = getString(R.string.release_date, request.released)
+                binding.tvPlatform.text = getString(R.string.website, request.website)
                 Picasso.get().load(request.background_image).into(binding.imgGame)
             }
         }

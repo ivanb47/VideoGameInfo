@@ -9,16 +9,20 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import harpritIvanUday.example.gameshed.R
 import harpritIvanUday.example.gameshed.activities.HomeActivity
 import harpritIvanUday.example.gameshed.adapters.PopularRecyclerViewAdapter
 import harpritIvanUday.example.gameshed.adapters.UpcomingGamesRecyclerViewAdapter
 import harpritIvanUday.example.gameshed.placeholder.PlaceholderContent
+import harpritIvanUday.example.gameshed.viewModel.HomeViewModel
 
 /**
  * A fragment representing a list of Items.
  */
 class UpcomingGamesFragment : Fragment() {
+    private val sharedViewModel: HomeViewModel by activityViewModels()
     private var columnCount = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +42,7 @@ class UpcomingGamesFragment : Fragment() {
         (activity as HomeActivity?)?.setFragmentRefreshListener2(object :
             HomeActivity.FragmentRefreshListener {
             override fun onRefresh() {
+
                 reloadList(view)
             }
         }
@@ -59,8 +64,8 @@ class UpcomingGamesFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = PopularRecyclerViewAdapter((activity as HomeActivity).upcomingGames)
-                Log.e("PopularGamesFragment", "onCreateView: ${(activity as HomeActivity).upcomingGames}" )
+                adapter = PopularRecyclerViewAdapter(sharedViewModel.upcomingGames)
+              //  Log.e("PopularGamesFragment", "onCreateView: ${(activity as HomeActivity).upcomingGames}" )
             }
         }
     }
