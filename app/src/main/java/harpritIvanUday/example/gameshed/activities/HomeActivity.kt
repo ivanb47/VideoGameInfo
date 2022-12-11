@@ -23,6 +23,9 @@ import harpritIvanUday.example.gameshed.databinding.ActivityHomeBinding
 import harpritIvanUday.example.gameshed.fragments.*
 import harpritIvanUday.example.gameshed.viewModel.HomeViewModel
 import harpritIvanUday.example.gameshed.viewModel.LoginViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.InputStreamReader
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
@@ -50,8 +53,6 @@ class HomeActivity : AppCompatActivity() {
 
         setContentView(binding.root)
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
-        val actionBar: ActionBar? = supportActionBar
-        actionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Fragments for bottom tabs
         val homeFragment= HomeFragment()
@@ -59,8 +60,7 @@ class HomeActivity : AppCompatActivity() {
         val aboutUsFragment= AboutUsFragment()
         val profileFragment= ProfileFragment()
 
-        homeViewModel.getFamousGamesData().start()
-
+        getFamousGameDataActivity()
         homeViewModel.getUpcomingGamesData().start()
         updateUI()
         bottomNavigationView.setOnItemSelectedListener {
@@ -101,37 +101,38 @@ class HomeActivity : AppCompatActivity() {
             commit()
         }
 
+    fun getFamousGameDataActivity(){
+        homeViewModel.getFamousGamesData().start()
+        runBlocking {
+            launch {
+                delay(1000L)
+            }
+        }
+        updateUI()
+    }
 
 
 
-
-    private fun updateFavoriteList(){
+     fun updateFavoriteList(){
         runOnUiThread {
             kotlin.run {
-                if(getFragmentRefreshListener()!= null){
+                if(homeViewModel.getFragmentRefreshListener()!= null){
                     getFragmentRefreshListener()?.onRefresh()
                 }
             }
         }
     }
-    private fun updateUI(){
+
+     fun updateUI(){
         runOnUiThread{
             kotlin.run {
-                if(getFragmentRefreshListener()!= null){
+                if(homeViewModel.getFragmentRefreshListener()!= null){
                     getFragmentRefreshListener()?.onRefresh()
                 }
             }
         }
     }
-    private fun updateFavUI(){
-        runOnUiThread{
-            kotlin.run {
-                if(getFragmentRefreshListener2()!= null){
-                    getFragmentRefreshListener2()?.onRefresh()
-                }
-            }
-        }
-    }
+
 
     private fun getFragmentRefreshListener(): FragmentRefreshListener? {
         return fragmentRefreshListener

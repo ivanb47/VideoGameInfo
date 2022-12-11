@@ -8,6 +8,9 @@ import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import harpritIvanUday.example.gameshed.APIFormat
 import harpritIvanUday.example.gameshed.Results
+import harpritIvanUday.example.gameshed.activities.HomeActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.InputStreamReader
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
@@ -19,14 +22,17 @@ class HomeViewModel: ViewModel() {
     var favoriteGames: List<Results> = mutableListOf()
     val currentUser = Firebase.firestore.collection("users").document(FirebaseAuth.getInstance().uid.toString())
 
+    private var fragmentRefreshListener: HomeActivity.FragmentRefreshListener? = null
+    private var fragmentRefreshListener2: HomeActivity.FragmentRefreshListener? = null
 
     fun getFavouriteGames(){
         favoriteGames = mutableListOf()
         currentUser.get().addOnSuccessListener { it ->
-            @Suppress("UNCHECKED_CAST") val result = it.get("favorites") as List<Int>
-            result.forEach{ id ->
+            @Suppress("UNCHECKED_CAST") val result = it.get("favorites") as List<Int>?
+            result?.forEach{ id ->
                 getGameData(id).start()
             }
+
         }
     }
 
@@ -42,7 +48,7 @@ class HomeViewModel: ViewModel() {
                 val inputStreamReader = InputStreamReader(inputSystem, "UTF-8")
                 val request = Gson().fromJson(inputStreamReader, APIFormat::class.java)
                 popularGames = request.results
-
+                // update...
                 inputStreamReader.close()
                 inputSystem.close()
             }
@@ -98,5 +104,16 @@ class HomeViewModel: ViewModel() {
         }
     }
 
+    fun getFragmentRefreshListener(): HomeActivity.FragmentRefreshListener? {
+        return fragmentRefreshListener
+    }
+
+    fun setFragmentRefreshListener(fragmentRefreshListener1: FragmentRefreshListener) {
+        fragmentRefreshListener = fragmentRefreshListener1
+    }
+
+    interface FragmentRefreshListener : HomeActivity.FragmentRefreshListener {
+        override fun onRefresh()
+    }
 
 }

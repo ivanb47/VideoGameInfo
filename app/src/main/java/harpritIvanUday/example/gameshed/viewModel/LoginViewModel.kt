@@ -35,6 +35,14 @@ class LoginViewModel: ViewModel() {
                 }
             }
         return firebaseUser
+
+        runBlocking {
+            launch {
+                delay(1000L)
+
+            }
+
+        }
     }
 
     fun firebaseCurrentUser(): FirebaseUser? {

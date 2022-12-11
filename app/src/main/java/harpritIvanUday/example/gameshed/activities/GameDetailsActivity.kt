@@ -4,7 +4,6 @@ import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.widget.RatingBar
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -17,7 +16,6 @@ import harpritIvanUday.example.gameshed.GameDetail
 import harpritIvanUday.example.gameshed.R
 import harpritIvanUday.example.gameshed.databinding.ActivityGameDetailsBinding
 import harpritIvanUday.example.gameshed.viewModel.GameDetailsViewModel
-import harpritIvanUday.example.gameshed.viewModel.LoginViewModel
 import java.io.InputStreamReader
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
@@ -33,14 +31,20 @@ class GameDetailsActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         binding = ActivityGameDetailsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel = ViewModelProvider(this)[GameDetailsViewModel::class.java]
+        setContentView(binding.root)
+
+        //To have the back button!!
+        val actionBar = supportActionBar
+
 
         val gameID = intent.getIntExtra("gameID", 0)
         Log.e("GameID", gameID.toString())
         getGamesData(gameID).start()
         addListenerOnRatingClick()
-        fetchUserData(gameID)
+        fetchUserData(gameID).start()
+
         binding.saveButton.setOnClickListener {
           // if userData.favorite contains gameID, remove it
             if( userData["favorites"].toString().contains(gameID.toString())){
@@ -51,12 +55,15 @@ class GameDetailsActivity : AppCompatActivity() {
                 addToFavorite(gameID)
             }
         }
+        binding.imgBack.setOnClickListener{
+            onBackPressed()
+        }
     }
     private fun addToFavorite(gameID: Int) {
         currentUser
             .update("favorites", FieldValue.arrayUnion(gameID))
             .addOnSuccessListener {
-                fetchUserData(gameID)
+                fetchUserData(gameID).start()
                 Log.d(TAG, "DocumentSnapshot successfully updated!")
             }
             .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
@@ -65,21 +72,35 @@ class GameDetailsActivity : AppCompatActivity() {
         currentUser
             .update("favorites", FieldValue.arrayRemove(gameID))
             .addOnSuccessListener {
-                fetchUserData(gameID)
+                fetchUserData(gameID).start()
                 Log.d(TAG, "DocumentSnapshot successfully updated!")
             }
             .addOnFailureListener { e -> Log.w(TAG, "Error updating document", e) }
     }
-    private fun fetchUserData(gameID: Int) {
-        Firebase.firestore.collection("users").document(FirebaseAuth.getInstance().uid.toString()).get().addOnSuccessListener {
-            userData = it.data as HashMap<String, Any>
-            if(userData["favorites"].toString().contains(gameID.toString())){
-                binding.saveButton.text = getString(R.string.saved)
-            }else{
-                binding.saveButton.text = getString(R.string.clickToSave)
+    private fun fetchUserData(gameID: Int):Thread {
+        return Thread{
+            Firebase.firestore.collection("users").document(FirebaseAuth.getInstance().uid.toString()).get().addOnSuccessListener {it
+                if (it != null){
+                    userData = it.data as HashMap<String, Any>
+                    if(userData["favorites"].toString().contains(gameID.toString())){
+                        runOnUiThread {
+                            kotlin.run {
+                                binding.saveButton.text = getString(R.string.saved)
+                            }
+                        }
+                    }else{
+                        runOnUiThread {
+                            kotlin.run{
+                                binding.saveButton.text = getString(R.string.clickToSave)
+                            }
+                        }
+                    }
+                    Log.e(TAG, "fetchUserData: $userData")
+                }
+
             }
-            Log.e(TAG, "fetchUserData: $userData")
         }
+
     }
     private fun addListenerOnRatingClick() {
         ratingbar = findViewById(R.id.ratingBar)
@@ -117,7 +138,7 @@ class GameDetailsActivity : AppCompatActivity() {
         runOnUiThread{
             kotlin.run {
                 binding.tvGameDetails.text = request.description_raw
-                binding.topAppBar.title = request.name
+               // binding.topAppBar.title = request.name
                 binding.ratingBar.rating = request.rating.toFloat()
                 binding.tvRating.text = request.rating
                 binding.tvReleaseDate.text = getString(R.string.release_date, request.released)
@@ -126,4 +147,5 @@ class GameDetailsActivity : AppCompatActivity() {
             }
         }
     }
+
 }
