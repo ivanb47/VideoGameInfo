@@ -22,10 +22,12 @@
     <string name="no_account">Do not have an account, Sign Up</string>
     <string name="have_account">Already have an account, Sign In</string>
     <string name="here">Here</string>
+    <string name="saved">Saved</string>
+    <string name="clickToSave">Click To Save</string>
 
     <string-array name="app_features">
         <item>> User can view latest and upcoming games</item>
-        <item>> User can can save games to their favorite list</item>
+        <item>> User can save games to their favorite list</item>
         <item>> User can view detail of games</item>
         <item>> User can access their favorite games any time</item>
     </string-array>
@@ -38,7 +40,7 @@
     <string name="rating">Rating</string>
     <string name="game_name">Game Name</string>
     <string name="lorem">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s</string>
-    <string name="release_date">Release Date:</string>
+    <string name="release_date">Release Date: %1$s.</string>
     <string name="tba">TBA :</string>
     <string name="platform">Platforms :</string>
     <string name="esrb_rating">ESRB Rating :</string>
@@ -60,5 +62,5 @@
     <string name="developers">Uday, Ivan and Harprit</string>
     <string name="app_features">App features</string>
     <string name="app_info">This application is developed as a part of project 1 of Android development course.</string>
-    <string name="website">"Website: "</string>
+    <string name="website">"Website: %1$s."</string>
 </resources>
