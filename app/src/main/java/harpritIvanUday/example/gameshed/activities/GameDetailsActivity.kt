@@ -1,11 +1,15 @@
 package harpritIvanUday.example.gameshed.activities
 
+import android.content.ContentValues.TAG
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.RatingBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
@@ -23,8 +27,9 @@ import javax.net.ssl.HttpsURLConnection
 class GameDetailsActivity : AppCompatActivity() {
     private lateinit var viewModel: GameDetailsViewModel
     private lateinit var favViewModel: HomeViewModel
-    private var ratingbar: RatingBar? = null
-    private lateinit var binding: ActivityGameDetailsBinding
+    var ratingbar: RatingBar? = null
+    lateinit var binding: ActivityGameDetailsBinding
+    lateinit var website: String
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -40,6 +45,15 @@ class GameDetailsActivity : AppCompatActivity() {
         addListenerOnRatingClick()
         fetchUserData(gameID).start()
 
+        val openURL = Intent(Intent.ACTION_VIEW)
+        binding.tvPlatform.setOnClickListener {
+            val url = binding.tvPlatform.text.toString()
+            Log.e("URL", url)
+            if(website != null){
+                openURL.data = Uri.parse(website)
+                startActivity(openURL)
+            }
+        }
         binding.saveButton.setOnClickListener {
           // if userData.favorite contains gameID, remove it
             if( viewModel.userData["favorites"].toString().contains(gameID.toString())){
@@ -60,7 +74,7 @@ class GameDetailsActivity : AppCompatActivity() {
 
     private fun fetchUserData(gameID: Int):Thread {
         return Thread{
-            Firebase.firestore.collection("users").document(FirebaseAuth.getInstance().uid.toString()).get().addOnSuccessListener {
+            Firebase.firestore.collection("users").document(FirebaseAuth.getInstance().uid.toString()).get().addOnSuccessListener {it
                 if (it != null){
                     viewModel.userData = it.data as HashMap<String, Any>
                     if(viewModel.userData["favorites"].toString().contains(gameID.toString())){
@@ -105,6 +119,7 @@ class GameDetailsActivity : AppCompatActivity() {
                 val request = Gson().fromJson(inputStreamReader, GameDetail::class.java)
                 Log.d("API", request.toString())
                 updateUI(request)
+                website = request.website
                 inputStreamReader.close()
                 inputSystem.close()
             }
