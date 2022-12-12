@@ -1,5 +1,6 @@
 package harpritIvanUday.example.gameshed.activities
 
+import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
@@ -55,40 +56,12 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
         viewModel.mutableUserLive.observe(this,userObserver)
-        fun createUserData() {
-            val userData = hashMapOf(
-                "name" to binding.nameTextSignup.text.toString(),
-                "email" to binding.emailTextLogin.text.toString(),
-                "id" to viewModel.firebaseCurrentUser()?.uid
-            )
-            val db = Firebase.firestore
-            db.collection("users").document(userData["id"].toString()).set(userData)
-                .addOnSuccessListener { documentReference ->
-                    Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
-                }
-                .addOnFailureListener { e ->
-                    Log.w(TAG, "Error adding document", e)
-                }
-        }
+
         binding.signupButton.setOnClickListener{
             val email: String = binding.emailTextLogin.text.toString().trim {it <= ' '}
             val password: String = binding.passwordTextSignup.text.toString().trim {it <= ' '}
-            val user = viewModel.firebaseSignup(email,password,this)
-                    if (user != null) {
-                        // Sign in success, update UI with the signed-in user's information
-                        createUserData()
-                        val profileUpdates = UserProfileChangeRequest.Builder()
-                            .setDisplayName(binding.nameTextSignup.text.toString())
-                            .build()
-                        user.updateProfile(profileUpdates)
-                        moveToHome(user)
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Toast.makeText(baseContext, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show()
-                    }
-
-
+            val name: String = binding.nameTextSignup.text.toString()
+            viewModel.firebaseSignup(email,password,name,this)
         }
     }
 }

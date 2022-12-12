@@ -42,7 +42,6 @@ class LoginActivity : AppCompatActivity() {
             // Update the UI, in this case, a TextView.
             if(user != null){
                 moveToHome(user)
-
             }
         }
         viewModel.mutableUserLive.observe(this,userObserver)

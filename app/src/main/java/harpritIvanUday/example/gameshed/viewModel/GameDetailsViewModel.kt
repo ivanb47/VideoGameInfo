@@ -12,9 +12,11 @@ import com.google.firebase.ktx.Firebase
 class GameDetailsViewModel: ViewModel() {
     lateinit var userData: HashMap<String, Any>
     private val currentUser = Firebase.firestore.collection("users").document(FirebaseAuth.getInstance().uid.toString())
-
     init {
         currentUser.get().addOnSuccessListener {
+            if(it.exists()){
+                userData = it.data as HashMap<String, Any>
+            }
             userData = it.data as HashMap<String, Any>
         }
     }
