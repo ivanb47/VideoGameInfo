@@ -1,6 +1,8 @@
 package harpritIvanUday.example.gameshed.activities
 
 import android.content.ContentValues.TAG
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.RatingBar
@@ -27,7 +29,7 @@ class GameDetailsActivity : AppCompatActivity() {
     private lateinit var favViewModel: HomeViewModel
     var ratingbar: RatingBar? = null
     lateinit var binding: ActivityGameDetailsBinding
-    //private lateinit var userData: HashMap<String, Any>
+    lateinit var website: String
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -43,6 +45,15 @@ class GameDetailsActivity : AppCompatActivity() {
         addListenerOnRatingClick()
         fetchUserData(gameID).start()
 
+        val openURL = Intent(Intent.ACTION_VIEW)
+        binding.tvPlatform.setOnClickListener {
+            val url = binding.tvPlatform.text.toString()
+            Log.e("URL", url)
+            if(website != null){
+                openURL.data = Uri.parse(website)
+                startActivity(openURL)
+            }
+        }
         binding.saveButton.setOnClickListener {
           // if userData.favorite contains gameID, remove it
             if( viewModel.userData["favorites"].toString().contains(gameID.toString())){
@@ -108,6 +119,7 @@ class GameDetailsActivity : AppCompatActivity() {
                 val request = Gson().fromJson(inputStreamReader, GameDetail::class.java)
                 Log.d("API", request.toString())
                 updateUI(request)
+                website = request.website
                 inputStreamReader.close()
                 inputSystem.close()
             }
