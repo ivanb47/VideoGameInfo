@@ -1,18 +1,11 @@
 package harpritIvanUday.example.gameshed.activities
 
-import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import harpritIvanUday.example.gameshed.R
 import harpritIvanUday.example.gameshed.databinding.ActivitySignUpBinding
 import harpritIvanUday.example.gameshed.viewModel.LoginViewModel
@@ -49,7 +42,7 @@ class SignUpActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
-        val userObserver = Observer<FirebaseUser> { user ->
+        val userObserver = Observer<FirebaseUser?> { user ->
             // Update the UI, in this case, a TextView.
             if(user != null){
                 moveToHome(user)
@@ -61,7 +54,7 @@ class SignUpActivity : AppCompatActivity() {
             val email: String = binding.emailTextLogin.text.toString().trim {it <= ' '}
             val password: String = binding.passwordTextSignup.text.toString().trim {it <= ' '}
             val name: String = binding.nameTextSignup.text.toString()
-            viewModel.firebaseSignup(email,password,name,this)
+            viewModel.firebaseSignup(email,password,name)
         }
     }
 }

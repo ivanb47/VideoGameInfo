@@ -33,7 +33,7 @@ class UpcomingGamesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_popular_list, container, false)
-        val upcomingListObserver = Observer<List<Results>> { _ ->
+        val upcomingListObserver = Observer<List<Results>> {
             reloadList(view)
         }
         sharedViewModel.upcomingGamesLive.observe(viewLifecycleOwner, upcomingListObserver)

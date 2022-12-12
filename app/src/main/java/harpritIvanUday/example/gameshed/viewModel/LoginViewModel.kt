@@ -1,21 +1,15 @@
 package harpritIvanUday.example.gameshed.viewModel
 
-import android.app.Activity
 import android.content.ContentValues
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class LoginViewModel: ViewModel() {
 
@@ -42,7 +36,7 @@ class LoginViewModel: ViewModel() {
         return auth.currentUser
     }
 
-    fun createUserData(name: String, email: String, id:String) {
+    private fun createUserData(name: String, email: String, id:String) {
         val userData = hashMapOf(
             "name" to name,
             "email" to email,

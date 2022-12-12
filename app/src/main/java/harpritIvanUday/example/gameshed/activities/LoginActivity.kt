@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
-        val userObserver = Observer<FirebaseUser> { user ->
+        val userObserver = Observer<FirebaseUser?> { user ->
             // Update the UI, in this case, a TextView.
             if(user != null){
                 moveToHome(user)
