@@ -20,8 +20,8 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             style="?attr/collapsingToolbarLayoutLargeStyle"
             android:layout_width="match_parent"
-            android:background="@color/material_dynamic_neutral_variant90"
-            android:layout_height="?attr/collapsingToolbarLayoutLargeSize">
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+            android:background="@color/material_dynamic_neutral_variant90">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/topAppBar"
@@ -55,12 +55,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:autofillHints="@string/prompt_password"
+        android:background="@color/material_dynamic_neutral_variant90"
         android:hint="@string/prompt_password"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:padding="10dp"
-        android:background="@color/material_dynamic_neutral_variant90"
         android:selectAllOnFocus="true"
         app:layout_constraintBottom_toTopOf="@+id/buttonLogIn"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,11 +95,13 @@
         android:id="@+id/textviewLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
         android:layout_marginBottom="20dp"
         android:text="@string/no_account"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/goToSignUp"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -107,11 +109,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/here"
         android:textColor="@color/design_default_color_primary_variant"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/textviewLogin"
-        app:layout_constraintStart_toEndOf="@+id/textviewLogin"
-        app:layout_constraintTop_toTopOf="@+id/textviewLogin" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textviewLogin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
