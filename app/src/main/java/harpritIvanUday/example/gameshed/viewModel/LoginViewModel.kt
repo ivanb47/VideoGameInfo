@@ -22,7 +22,7 @@ class LoginViewModel: ViewModel() {
     private var auth: FirebaseAuth = Firebase.auth
 
     private var status: String ?= null
-    var mutableUserLive = MutableLiveData<FirebaseUser>()
+    var mutableUserLive = MutableLiveData<FirebaseUser?>()
 
     fun firebaseLogin(email:String, password:String): FirebaseUser? {
         auth.signInWithEmailAndPassword(email,password)
@@ -58,7 +58,7 @@ class LoginViewModel: ViewModel() {
             }
     }
 
-    fun firebaseSignup(email: String, password: String, name:String, activity: Activity): FirebaseUser? {
+    fun firebaseSignup(email: String, password: String, name:String): FirebaseUser? {
          auth.createUserWithEmailAndPassword(email, password)
              .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
@@ -67,10 +67,10 @@ class LoginViewModel: ViewModel() {
                             val profileUpdates = UserProfileChangeRequest.Builder()
                                 .setDisplayName(name)
                                 .build()
-                            user?.updateProfile(profileUpdates)
-                                ?.addOnCompleteListener { task ->
+                            user.updateProfile(profileUpdates)
+                                .addOnCompleteListener {
                                     if (task.isSuccessful) {
-                                        mutableUserLive.value = user!!
+                                        mutableUserLive.value = user
                                     }
                                 }
                         } else {
@@ -78,13 +78,6 @@ class LoginViewModel: ViewModel() {
                             Log.w(ContentValues.TAG, "createUserWithEmail:failure", task.exception)
                         }
                     }
-        //Delay because it returns too fast
-         runBlocking {
-            launch {
-                delay(1000L)
-
-            }
-        }
         return auth.currentUser
     }
 
