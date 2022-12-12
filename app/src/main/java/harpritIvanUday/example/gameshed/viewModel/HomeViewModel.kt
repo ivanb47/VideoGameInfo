@@ -1,6 +1,7 @@
 package harpritIvanUday.example.gameshed.viewModel
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -22,20 +23,21 @@ class HomeViewModel: ViewModel() {
     var favoriteGames: List<Results> = mutableListOf()
     val currentUser = Firebase.firestore.collection("users").document(FirebaseAuth.getInstance().uid.toString())
 
-    private var fragmentRefreshListener: HomeActivity.FragmentRefreshListener? = null
-    private var fragmentRefreshListener2: HomeActivity.FragmentRefreshListener? = null
+    var popularGames_ = MutableLiveData<List<Results>>()
+    var upcomingGames_ = MutableLiveData<List<Results>>()
+    var favoriteGames_ = MutableLiveData<List<Results>>()
 
     fun getFavouriteGames(){
+        Log.e("getFavouriteGames", "called")
         favoriteGames = mutableListOf()
+        favoriteGames_ = MutableLiveData<List<Results>>()
         currentUser.get().addOnSuccessListener { it ->
             @Suppress("UNCHECKED_CAST") val result = it.get("favorites") as List<Int>?
             result?.forEach{ id ->
                 getGameData(id).start()
             }
-
         }
     }
-
      fun getFamousGamesData(): Thread
     {
         return Thread {
@@ -48,6 +50,7 @@ class HomeViewModel: ViewModel() {
                 val inputStreamReader = InputStreamReader(inputSystem, "UTF-8")
                 val request = Gson().fromJson(inputStreamReader, APIFormat::class.java)
                 popularGames = request.results
+                popularGames_.postValue( request.results)
                 // update...
                 inputStreamReader.close()
                 inputSystem.close()
@@ -70,6 +73,7 @@ class HomeViewModel: ViewModel() {
                 val inputStreamReader = InputStreamReader(inputSystem, "UTF-8")
                 val request = Gson().fromJson(inputStreamReader, APIFormat::class.java)
                 upcomingGames = request.results
+                upcomingGames_.postValue( request.results)
 
                 inputStreamReader.close()
                 inputSystem.close()
@@ -93,7 +97,7 @@ class HomeViewModel: ViewModel() {
                 val inputStreamReader = InputStreamReader(inputSystem, "UTF-8")
                 val request = Gson().fromJson(inputStreamReader, Results::class.java)
                 favoriteGames = favoriteGames + request
-
+                favoriteGames_.postValue( favoriteGames + request)
                 inputStreamReader.close()
                 inputSystem.close()
             }
@@ -102,18 +106,6 @@ class HomeViewModel: ViewModel() {
                 Log.e("API", "Error")
             }
         }
-    }
-
-    fun getFragmentRefreshListener(): HomeActivity.FragmentRefreshListener? {
-        return fragmentRefreshListener
-    }
-
-    fun setFragmentRefreshListener(fragmentRefreshListener1: FragmentRefreshListener) {
-        fragmentRefreshListener = fragmentRefreshListener1
-    }
-
-    interface FragmentRefreshListener : HomeActivity.FragmentRefreshListener {
-        override fun onRefresh()
     }
 
 }

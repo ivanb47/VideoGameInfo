@@ -16,6 +16,7 @@ import harpritIvanUday.example.gameshed.GameDetail
 import harpritIvanUday.example.gameshed.R
 import harpritIvanUday.example.gameshed.databinding.ActivityGameDetailsBinding
 import harpritIvanUday.example.gameshed.viewModel.GameDetailsViewModel
+import harpritIvanUday.example.gameshed.viewModel.HomeViewModel
 import java.io.InputStreamReader
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
@@ -23,6 +24,7 @@ import javax.net.ssl.HttpsURLConnection
 
 class GameDetailsActivity : AppCompatActivity() {
     private lateinit var viewModel: GameDetailsViewModel
+    private lateinit var favViewModel: HomeViewModel
     var ratingbar: RatingBar? = null
     lateinit var binding: ActivityGameDetailsBinding
     //private lateinit var userData: HashMap<String, Any>
@@ -32,6 +34,7 @@ class GameDetailsActivity : AppCompatActivity() {
         binding = ActivityGameDetailsBinding.inflate(layoutInflater)
         actionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel = ViewModelProvider(this)[GameDetailsViewModel::class.java]
+        favViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         setContentView(binding.root)
 
         val gameID = intent.getIntExtra("gameID", 0)
@@ -44,15 +47,17 @@ class GameDetailsActivity : AppCompatActivity() {
           // if userData.favorite contains gameID, remove it
             if( viewModel.userData["favorites"].toString().contains(gameID.toString())){
                 viewModel.removeFromFavorite(gameID)
+                favViewModel.getFamousGamesData()
                 Log.e("Removed from favorites", gameID.toString())
             }else{
                 Log.e("Added to favorites", gameID.toString())
+                favViewModel.getFamousGamesData()
                 viewModel.addToFavorite(gameID)
             }
             fetchUserData(gameID).start()
         }
         binding.imgBack.setOnClickListener{
-            onBackPressed()
+            finish()
         }
     }
 

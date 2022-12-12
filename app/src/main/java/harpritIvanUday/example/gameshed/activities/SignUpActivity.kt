@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -49,6 +50,13 @@ class SignUpActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
+        val userObserver = Observer<FirebaseUser> { user ->
+            // Update the UI, in this case, a TextView.
+            if(user != null){
+                moveToHome(user)
+            }
+        }
+        viewModel.mutableUser_.observe(this,userObserver)
         fun createUserData() {
             val userData = hashMapOf(
                 "name" to binding.nameTextSignup.text.toString(),

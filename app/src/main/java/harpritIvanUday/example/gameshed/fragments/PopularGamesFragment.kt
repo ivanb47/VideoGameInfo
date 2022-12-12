@@ -17,12 +17,15 @@ import harpritIvanUday.example.gameshed.activities.HomeActivity
 import harpritIvanUday.example.gameshed.adapters.PopularRecyclerViewAdapter
 import harpritIvanUday.example.gameshed.viewModel.HomeViewModel
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import harpritIvanUday.example.gameshed.Results
 
 /**
  * A fragment representing a list of Items.
  */
 class PopularGamesFragment : Fragment() {
     private val sharedViewModel: HomeViewModel by activityViewModels()
+
     private var columnCount = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,15 +38,11 @@ class PopularGamesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_popular_list, container, false)
-        reloadList(view)
-        (activity as HomeActivity?)?.setFragmentRefreshListener(object :
-            HomeActivity.FragmentRefreshListener {
-            override fun onRefresh() {
-
-                reloadList(view)
-            }
+        val popularListObserver = Observer<List<Results>> { list ->
+            reloadList(view)
         }
-        )
+        sharedViewModel.popularGames_.observe(viewLifecycleOwner, popularListObserver)
+        reloadList(view)
         return view
     }
     fun reloadList(view: View){
@@ -53,12 +52,10 @@ class PopularGamesFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = PopularRecyclerViewAdapter(sharedViewModel.popularGames)
-                //Log.e("PopularGamesFragment", "onCreateView: ${(activity as HomeActivity).popularGames}" )
+                adapter = PopularRecyclerViewAdapter(sharedViewModel.popularGames_.value?: listOf())
             }
         }
     }
-
     companion object {
 
         // TODO: Customize parameter argument names

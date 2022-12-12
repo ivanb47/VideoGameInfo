@@ -2,9 +2,12 @@ package harpritIvanUday.example.gameshed.viewModel
 
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -13,6 +16,8 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import harpritIvanUday.example.gameshed.activities.HomeActivity
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -22,20 +27,20 @@ class LoginViewModel: ViewModel() {
     var auth: FirebaseAuth = Firebase.auth
     var firebaseUser: FirebaseUser ?= null
     var status: String ?= null
+    var mutableUser_ = MutableLiveData<FirebaseUser>()
 
     fun firebaseLogin(email:String, password:String): FirebaseUser? {
         auth.signInWithEmailAndPassword(email,password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    firebaseUser = task.result!!.user!!
+                    mutableUser_.value = task.result!!.user!!
                     status = "success"
 
                 } else {
                     status = task.exception!!.message.toString()
                 }
             }
-        return firebaseUser
-
+        return mutableUser_.value
         runBlocking {
             launch {
                 delay(1000L)

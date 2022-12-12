@@ -10,8 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import harpritIvanUday.example.gameshed.R
+import harpritIvanUday.example.gameshed.Results
 import harpritIvanUday.example.gameshed.activities.HomeActivity
 import harpritIvanUday.example.gameshed.adapters.PopularRecyclerViewAdapter
 import harpritIvanUday.example.gameshed.adapters.UpcomingGamesRecyclerViewAdapter
@@ -31,41 +33,28 @@ class UpcomingGamesFragment : Fragment() {
         }
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_popular_list, container, false)
+        val upcomingListObserver = Observer<List<Results>> { list ->
+            reloadList(view)
+        }
+        sharedViewModel.upcomingGames_.observe(viewLifecycleOwner, upcomingListObserver)
         // Set the adapter
         reloadList(view)
-        (activity as HomeActivity?)?.setFragmentRefreshListener2(object :
-            HomeActivity.FragmentRefreshListener {
-            override fun onRefresh() {
-
-                reloadList(view)
-            }
-        }
-        )
         return view
     }
 
-    override fun onResume() {
-        Log.e("onResume", "onResume")
-        val view = view
-        super.onResume()
-        reloadList(view!!)
-    }
-
-    fun reloadList(view: View){
+    private fun reloadList(view: View){
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = PopularRecyclerViewAdapter(sharedViewModel.upcomingGames)
-              //  Log.e("PopularGamesFragment", "onCreateView: ${(activity as HomeActivity).upcomingGames}" )
+                adapter = PopularRecyclerViewAdapter(sharedViewModel.upcomingGames_.value?: listOf())
             }
         }
     }

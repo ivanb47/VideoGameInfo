@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -34,9 +35,6 @@ class HomeActivity : AppCompatActivity() {
     lateinit var homeViewModel: HomeViewModel
     private lateinit var binding: ActivityHomeBinding
     private lateinit var bottomNavigationView: BottomNavigationView
-    private var fragmentRefreshListener: FragmentRefreshListener? = null
-    private var fragmentRefreshListener2: FragmentRefreshListener? = null
-
 
     fun moveToLogin() {
         val intent = Intent(this,LoginActivity::class.java)
@@ -44,7 +42,6 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        window.statusBarColor = this.resources.getColor(R.color.white)
@@ -62,7 +59,6 @@ class HomeActivity : AppCompatActivity() {
 
         getFamousGameDataActivity()
         homeViewModel.getUpcomingGamesData().start()
-        updateUI()
         bottomNavigationView.setOnItemSelectedListener {
             item-> when(item.itemId){
             R.id.home -> {
@@ -90,11 +86,10 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        homeViewModel.getFavouriteGames()
-        updateFavoriteList()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        homeViewModel.getFavouriteGames()
+//    }
     private fun setCurrentFragment(fragment: Fragment)=
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.viewPager,fragment)
@@ -103,58 +98,6 @@ class HomeActivity : AppCompatActivity() {
 
     fun getFamousGameDataActivity(){
         homeViewModel.getFamousGamesData().start()
-        runBlocking {
-            launch {
-                delay(1000L)
-            }
-        }
-        updateUI()
     }
 
-
-
-     fun updateFavoriteList(){
-        runOnUiThread {
-            kotlin.run {
-                if(homeViewModel.getFragmentRefreshListener()!= null){
-                    getFragmentRefreshListener()?.onRefresh()
-                }
-            }
-        }
-    }
-
-     fun updateUI(){
-        runOnUiThread{
-            kotlin.run {
-                if(homeViewModel.getFragmentRefreshListener()!= null){
-                    getFragmentRefreshListener()?.onRefresh()
-                }
-            }
-        }
-    }
-
-
-    private fun getFragmentRefreshListener(): FragmentRefreshListener? {
-        return fragmentRefreshListener
-    }
-
-    fun setFragmentRefreshListener(fragmentRefreshListener1: FragmentRefreshListener) {
-        fragmentRefreshListener = fragmentRefreshListener1
-    }
-
-    interface FragmentRefreshListener {
-        fun onRefresh()
-    }
-
-    private fun getFragmentRefreshListener2(): FragmentRefreshListener? {
-        return fragmentRefreshListener2
-    }
-
-    fun setFragmentRefreshListener2(fragmentRefreshListener1: FragmentRefreshListener) {
-        fragmentRefreshListener2 = fragmentRefreshListener1
-    }
-
-    interface FragmentRefreshListener2 {
-        fun onRefresh()
-    }
 }

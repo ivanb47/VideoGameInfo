@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
@@ -35,13 +36,21 @@ class LoginActivity : AppCompatActivity() {
             moveToHome(currentUser)
         }
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding =ActivityLoginBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+
+        val userObserver = Observer<FirebaseUser> { user ->
+            // Update the UI, in this case, a TextView.
+            if(user != null){
+                moveToHome(user)
+
+            }
+        }
+        viewModel.mutableUser_.observe(this,userObserver)
 
         binding.buttonLogIn.setOnClickListener {
             when {
@@ -54,21 +63,7 @@ class LoginActivity : AppCompatActivity() {
                 else -> {
                     val email: String = binding.emailTextLogin.text.toString().trim { it <= ' ' }
                     val password: String = binding.passwordText.text.toString().trim { it <= ' ' }
-                    val user = viewModel.firebaseLogin(email, password)
-
-                    if (user != null) {
-                        Toast.makeText(this, "You are logged in successfully", Toast.LENGTH_SHORT)
-                            .show()
-                        moveToHome(user)
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "Login fail, please try again",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-
+                    viewModel.firebaseLogin(email, password)
                 }
             }
 
