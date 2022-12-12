@@ -133,7 +133,12 @@ class GameDetailsActivity : AppCompatActivity() {
                // binding.topAppBar.title = request.name
                 binding.ratingBar.rating = request.rating.toFloat()
                 binding.tvRating.text = request.rating
-                binding.tvReleaseDate.text = getString(R.string.release_date, request.released)
+                if(request.released != null){
+                    binding.tvReleaseDate.text = getString(R.string.release_date, request.released)
+                }
+                else{
+                    binding.tvReleaseDate.text = getString(R.string.release_date, "TBA")
+                }
                 binding.tvPlatform.text = getString(R.string.website, request.website)
                 Picasso.get().load(request.background_image).into(binding.imgGame)
             }
