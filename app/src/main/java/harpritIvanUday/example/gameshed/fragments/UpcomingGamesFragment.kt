@@ -1,7 +1,6 @@
 package harpritIvanUday.example.gameshed.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,13 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import harpritIvanUday.example.gameshed.R
 import harpritIvanUday.example.gameshed.Results
-import harpritIvanUday.example.gameshed.activities.HomeActivity
 import harpritIvanUday.example.gameshed.adapters.PopularRecyclerViewAdapter
-import harpritIvanUday.example.gameshed.adapters.UpcomingGamesRecyclerViewAdapter
-import harpritIvanUday.example.gameshed.placeholder.PlaceholderContent
 import harpritIvanUday.example.gameshed.viewModel.HomeViewModel
 
 /**
@@ -38,10 +33,10 @@ class UpcomingGamesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_popular_list, container, false)
-        val upcomingListObserver = Observer<List<Results>> { list ->
+        val upcomingListObserver = Observer<List<Results>> { _ ->
             reloadList(view)
         }
-        sharedViewModel.upcomingGames_.observe(viewLifecycleOwner, upcomingListObserver)
+        sharedViewModel.upcomingGamesLive.observe(viewLifecycleOwner, upcomingListObserver)
         // Set the adapter
         reloadList(view)
         return view
@@ -54,7 +49,7 @@ class UpcomingGamesFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = PopularRecyclerViewAdapter(sharedViewModel.upcomingGames_.value?: listOf())
+                adapter = PopularRecyclerViewAdapter(sharedViewModel.upcomingGamesLive.value?: listOf())
             }
         }
     }
@@ -63,13 +58,5 @@ class UpcomingGamesFragment : Fragment() {
         // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
 
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            UpcomingGamesFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
     }
 }

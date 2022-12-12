@@ -8,10 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import harpritIvanUday.example.gameshed.R
@@ -56,7 +54,7 @@ class SignUpActivity : AppCompatActivity() {
                 moveToHome(user)
             }
         }
-        viewModel.mutableUser_.observe(this,userObserver)
+        viewModel.mutableUserLive.observe(this,userObserver)
         fun createUserData() {
             val userData = hashMapOf(
                 "name" to binding.nameTextSignup.text.toString(),
@@ -66,7 +64,7 @@ class SignUpActivity : AppCompatActivity() {
             val db = Firebase.firestore
             db.collection("users").document(userData["id"].toString()).set(userData)
                 .addOnSuccessListener { documentReference ->
-                    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.toString()}")
+                    Log.d(TAG, "DocumentSnapshot added with ID: $documentReference")
                 }
                 .addOnFailureListener { e ->
                     Log.w(TAG, "Error adding document", e)

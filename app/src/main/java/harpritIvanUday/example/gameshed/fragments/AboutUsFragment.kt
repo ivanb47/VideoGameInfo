@@ -9,8 +9,8 @@ import android.widget.TextView
 import harpritIvanUday.example.gameshed.R
 
 class AboutUsFragment : Fragment() {
-    lateinit var info1 : TextView
-    lateinit var info2: TextView
+    private lateinit var info1 : TextView
+    private lateinit var info2: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -29,7 +29,7 @@ class AboutUsFragment : Fragment() {
 
         info1.setText(R.string.app_info)
         var info = ""
-        var count = 0;
+        var count = 0
         resources.getStringArray(R.array.app_features).forEach {
             if(count == 0 ){
                 info = it

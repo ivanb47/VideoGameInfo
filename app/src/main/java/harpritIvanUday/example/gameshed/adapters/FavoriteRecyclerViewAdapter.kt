@@ -2,27 +2,16 @@ package harpritIvanUday.example.gameshed.adapters
 
 import android.content.Intent
 import android.util.Log
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
-import com.google.common.collect.ComparisonChain.start
+import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import harpritIvanUday.example.gameshed.GameDetail
-import harpritIvanUday.example.gameshed.OnGameClickListener
 import harpritIvanUday.example.gameshed.Results
 import harpritIvanUday.example.gameshed.activities.GameDetailsActivity
-import harpritIvanUday.example.gameshed.activities.HomeActivity
-import harpritIvanUday.example.gameshed.databinding.ActivityHomeBinding
-
-import harpritIvanUday.example.gameshed.placeholder.PlaceholderContent.PlaceholderItem
 import harpritIvanUday.example.gameshed.databinding.FragmentPopularBinding
-import kotlinx.coroutines.NonCancellable.start
-import kotlin.math.log
 
 
 class FavoriteRecyclerViewAdapter(

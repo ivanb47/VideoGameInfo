@@ -1,13 +1,11 @@
 package harpritIvanUday.example.gameshed.activities
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.widget.RatingBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
@@ -25,9 +23,8 @@ import javax.net.ssl.HttpsURLConnection
 class GameDetailsActivity : AppCompatActivity() {
     private lateinit var viewModel: GameDetailsViewModel
     private lateinit var favViewModel: HomeViewModel
-    var ratingbar: RatingBar? = null
-    lateinit var binding: ActivityGameDetailsBinding
-    //private lateinit var userData: HashMap<String, Any>
+    private var ratingbar: RatingBar? = null
+    private lateinit var binding: ActivityGameDetailsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -63,7 +60,7 @@ class GameDetailsActivity : AppCompatActivity() {
 
     private fun fetchUserData(gameID: Int):Thread {
         return Thread{
-            Firebase.firestore.collection("users").document(FirebaseAuth.getInstance().uid.toString()).get().addOnSuccessListener {it
+            Firebase.firestore.collection("users").document(FirebaseAuth.getInstance().uid.toString()).get().addOnSuccessListener {
                 if (it != null){
                     viewModel.userData = it.data as HashMap<String, Any>
                     if(viewModel.userData["favorites"].toString().contains(gameID.toString())){

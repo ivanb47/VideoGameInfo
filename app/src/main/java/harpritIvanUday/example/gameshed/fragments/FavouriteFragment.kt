@@ -1,25 +1,19 @@
 package harpritIvanUday.example.gameshed.fragments
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import harpritIvanUday.example.gameshed.APIFormat
 import harpritIvanUday.example.gameshed.R
 import harpritIvanUday.example.gameshed.Results
-import harpritIvanUday.example.gameshed.activities.HomeActivity
 import harpritIvanUday.example.gameshed.adapters.FavoriteRecyclerViewAdapter
-import harpritIvanUday.example.gameshed.adapters.PopularRecyclerViewAdapter
 import harpritIvanUday.example.gameshed.viewModel.HomeViewModel
 
 /**
@@ -39,20 +33,19 @@ class FavouriteFragment : Fragment() {
         val view = view
         super.onResume()
         sharedViewModel.getFavouriteGames()
-        val famousObserver = Observer<List<Results>> { list ->
+        val famousObserver = Observer<List<Results>> {
             reloadList(view!!)
         }
-        sharedViewModel.favoriteGames_.observe(viewLifecycleOwner, famousObserver)
+        sharedViewModel.favoriteGamesLive.observe(viewLifecycleOwner, famousObserver)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_popular_list, container, false)
-        return view
+        return inflater.inflate(R.layout.fragment_popular_list, container, false)
     }
-    fun reloadList(view: View){
-        Log.e("PopularGamesFragment", "onCreateView: ${sharedViewModel.favoriteGames_.value}" )
+    private fun reloadList(view: View){
+        Log.e("PopularGamesFragment", "onCreateView: ${sharedViewModel.favoriteGamesLive.value}" )
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = when {
@@ -69,14 +62,6 @@ class FavouriteFragment : Fragment() {
         // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
 
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            PopularGamesFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
     }
 
 

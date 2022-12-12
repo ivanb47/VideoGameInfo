@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import harpritIvanUday.example.gameshed.fragments.PopularGamesFragment
 import harpritIvanUday.example.gameshed.fragments.UpcomingGamesFragment
 
-class PageAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){
+class PageAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){
     override fun getCount(): Int {
         return 2
     }

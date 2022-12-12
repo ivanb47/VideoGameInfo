@@ -7,12 +7,7 @@ import android.text.TextUtils
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import harpritIvanUday.example.gameshed.databinding.ActivityLoginBinding
 import harpritIvanUday.example.gameshed.viewModel.LoginViewModel
 
@@ -50,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
 
             }
         }
-        viewModel.mutableUser_.observe(this,userObserver)
+        viewModel.mutableUserLive.observe(this,userObserver)
 
         binding.buttonLogIn.setOnClickListener {
             when {
