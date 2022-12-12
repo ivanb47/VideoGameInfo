@@ -12,11 +12,10 @@ import com.google.firebase.ktx.Firebase
 class GameDetailsViewModel: ViewModel() {
     lateinit var userData: HashMap<String, Any>
     private val currentUser = Firebase.firestore.collection("users").document(FirebaseAuth.getInstance().uid.toString())
-    private var mutableUserDataLive = MutableLiveData<HashMap<String, Any>>()
+
     init {
         currentUser.get().addOnSuccessListener {
             userData = it.data as HashMap<String, Any>
-            mutableUserDataLive.value = userData
         }
     }
     fun addToFavorite(gameID: Int) {
