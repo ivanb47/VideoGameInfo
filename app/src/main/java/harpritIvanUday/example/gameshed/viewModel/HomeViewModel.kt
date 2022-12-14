@@ -9,6 +9,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import harpritIvanUday.example.gameshed.APIFormat
 import harpritIvanUday.example.gameshed.Results
+import kotlinx.coroutines.*
 import java.io.InputStreamReader
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
@@ -35,9 +36,16 @@ class HomeViewModel: ViewModel() {
             }
         }
     }
-     fun getFamousGamesData(): Thread
+    private val job = SupervisorJob()
+    private val ioScope by lazy { CoroutineScope(job + Dispatchers.IO) }
+    fun getFamousGamesData()
     {
-        return Thread {
+       ioScope.launch {
+          val games =  async { fetchFavGames() }
+           games.await()
+       }
+    }
+     private suspend fun fetchFavGames(){
             val uri = "https://api.rawg.io/api/games?key=d64de3cb496f46a1a5b5f3b1669764e9"
             val url = URL(uri)
             val connection  = url.openConnection() as HttpsURLConnection
@@ -57,7 +65,7 @@ class HomeViewModel: ViewModel() {
                 Log.e("API", "Error")
             }
         }
-    }
+
      fun getUpcomingGamesData(): Thread
     {
         return Thread {

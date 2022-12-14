@@ -67,10 +67,6 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        homeViewModel.getFavouriteGames()
-//    }
     private fun setCurrentFragment(fragment: Fragment)=
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.viewPager,fragment)
@@ -78,7 +74,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
     private fun getFamousGameDataActivity(){
-        homeViewModel.getFamousGamesData().start()
+        homeViewModel.getFamousGamesData()
     }
 
 }

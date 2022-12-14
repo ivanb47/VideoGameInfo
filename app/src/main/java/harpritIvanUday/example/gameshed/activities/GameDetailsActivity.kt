@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.RatingBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -17,6 +18,8 @@ import harpritIvanUday.example.gameshed.R
 import harpritIvanUday.example.gameshed.databinding.ActivityGameDetailsBinding
 import harpritIvanUday.example.gameshed.viewModel.GameDetailsViewModel
 import harpritIvanUday.example.gameshed.viewModel.HomeViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import java.io.InputStreamReader
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
@@ -54,11 +57,17 @@ class GameDetailsActivity : AppCompatActivity() {
           // if userData.favorite contains gameID, remove it
             if( viewModel.userData["favorites"].toString().contains(gameID.toString())){
                 viewModel.removeFromFavorite(gameID)
-                favViewModel.getFamousGamesData()
+                lifecycleScope.async(Dispatchers.IO) {
+                    favViewModel.getFamousGamesData()
+                }
+//                favViewModel.getFamousGamesData()
                 Log.e("Removed from favorites", gameID.toString())
             }else{
                 Log.e("Added to favorites", gameID.toString())
-                favViewModel.getFamousGamesData()
+                lifecycleScope.async {
+                    favViewModel.getFamousGamesData()
+                }
+//                favViewModel.getFamousGamesData()
                 viewModel.addToFavorite(gameID)
             }
             fetchUserData(gameID).start()
