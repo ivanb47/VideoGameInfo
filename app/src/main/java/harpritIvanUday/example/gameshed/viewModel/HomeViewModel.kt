@@ -41,11 +41,11 @@ class HomeViewModel: ViewModel() {
     fun getFamousGamesData()
     {
        ioScope.launch {
-          val games =  async { fetchFavGames() }
+          val games =  async { fetchFamousGames() }
            games.await()
        }
     }
-     private suspend fun fetchFavGames(){
+     private suspend fun fetchFamousGames(){
             val uri = "https://api.rawg.io/api/games?key=d64de3cb496f46a1a5b5f3b1669764e9"
             val url = URL(uri)
             val connection  = url.openConnection() as HttpsURLConnection
