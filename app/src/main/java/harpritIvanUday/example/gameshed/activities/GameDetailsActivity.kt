@@ -104,9 +104,7 @@ class GameDetailsActivity : AppCompatActivity() {
     }
     private fun addListenerOnRatingClick() {
         ratingbar = findViewById(R.id.ratingBar)
-        //Performing action on Button Click
-        //Performing action on Button Click
-   //         val rating = ratingbar!!.rating.toString()
+
     }
     private fun getGamesData(id: Int): Thread
     {
@@ -115,6 +113,7 @@ class GameDetailsActivity : AppCompatActivity() {
             val uri = "https://api.rawg.io/api/games/"
             val key = "d64de3cb496f46a1a5b5f3b1669764e9"
             val url = URL("$uri$id?key=$key")
+            Log.d("URLINK", "$uri$id?key=$key")
             val connection  = url.openConnection() as HttpsURLConnection
             Log.e("API",connection.inputStream.toString())
             if(connection.responseCode == 200)

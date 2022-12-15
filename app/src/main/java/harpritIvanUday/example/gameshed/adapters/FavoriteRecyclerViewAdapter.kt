@@ -32,6 +32,9 @@ class FavoriteRecyclerViewAdapter(
         val item = values[position]
         holder.tvGame.text = item.name
         holder.tvGameRating.text = "Rating: " + item.rating.toString()
+        if(item.released == null){
+            item.released = "TBA"
+        }
         holder.tvGameRelease.text = "Release Date: " +item.released
         Picasso.get().load(item.background_image).into(holder.imgGame)
         holder.cardGame.setOnClickListener {

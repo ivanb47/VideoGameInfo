@@ -38,6 +38,7 @@ class HomeViewModel: ViewModel() {
     }
     private val job = SupervisorJob()
     private val ioScope by lazy { CoroutineScope(job + Dispatchers.IO) }
+
     fun getFamousGamesData()
     {
        ioScope.launch {
@@ -45,7 +46,7 @@ class HomeViewModel: ViewModel() {
            games.await()
        }
     }
-     private suspend fun fetchFamousGames(){
+     private fun fetchFamousGames(){
             val uri = "https://api.rawg.io/api/games?key=d64de3cb496f46a1a5b5f3b1669764e9"
             val url = URL(uri)
             val connection  = url.openConnection() as HttpsURLConnection
@@ -78,7 +79,17 @@ class HomeViewModel: ViewModel() {
                 val inputStreamReader = InputStreamReader(inputSystem, "UTF-8")
                 val request = Gson().fromJson(inputStreamReader, APIFormat::class.java)
                 upcomingGames = request.results
-                upcomingGamesLive.postValue( request.results)
+//                Log.d("results_maaan", "$upcomingGames")
+//                var test = upcomingGames[0].released
+//                var upcomingGamesLength = upcomingGames.lastIndex
+//                Log.d("TEST", "$test")
+//                var i = 0
+//                for (releasedGame in 0..upcomingGamesLength){
+//                   if(upcomingGames[releasedGame].released == null){
+//                       upcomingGames[releasedGame].released = "TBA"
+//                   }
+//            }
+                upcomingGamesLive.postValue(upcomingGames)
 
                 inputStreamReader.close()
                 inputSystem.close()
