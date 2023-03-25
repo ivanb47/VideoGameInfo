@@ -16,20 +16,24 @@
 
 <!-- Screenshots -->
 
-<!--- ### :camera: Demo video of the application
+### :camera: Demo video of the application
 
 <div align="center">
 
-https://user-images.githubusercontent.com/34532828/189505007-884e062b-263b-45c7-b820-75a7fb6270ab.mp4
+
+https://user-images.githubusercontent.com/34532828/227736387-26487a09-eae1-4054-a14f-2b662320c316.mp4
+
 
 </div>
--->
+
 <!-- TechStack -->
 
 ### :space_invader: Tools, Technologies, APIs, and Services used:
 
 - Created application using Kotlin in Android Studio using AndroidX to create the UI.
 - Firebase Firestore for back-end needs, and Firebase Auth for authentication purposes.
+- Used Picaso for image downloading and caching dynamically.
+- Used espresso for UI testing.
 
 <!-- Features -->
 
