@@ -43,9 +43,3 @@ https://user-images.githubusercontent.com/34532828/227736387-26487a09-eae1-4054-
 - Uers can view upcoming and popular games. and by presing them they can see more detail for that particular game.
 - Users can save their favorite games.
 - User can access their favorite games from favorite tab.
-
-## You may also like...
-
-- [Weather app in iOS](https://github.com/udkhatri/WeatherAppIos)
-- [Instagram like social media application in react native](https://github.com/udkhatri/socialApp)
-- [recepie finding sand saving progressive web app](https://github.com/udkhatri/PWAProject)
